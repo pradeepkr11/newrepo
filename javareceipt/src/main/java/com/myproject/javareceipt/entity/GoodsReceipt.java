@@ -1,5 +1,7 @@
 package com.myproject.javareceipt.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,8 +16,9 @@ public class GoodsReceipt {
     @Column(name = "goods_receipt_id")
     private Long goodsReceiptId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "purchase_order_id")
+    @JsonManagedReference
     private PurchaseOrder purchaseOrderId;
 
     @Column(name = "vendor_id")

@@ -1,5 +1,7 @@
 package com.myproject.javareceipt.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,6 +17,7 @@ public class PurchaseOrder {
     private Long purchaseOrderId;
 
     @OneToMany(mappedBy = "purchaseOrderId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonBackReference
     private List<GoodsReceipt> goodsReceipts;
 
     public void add(GoodsReceipt goodsReceipt){
