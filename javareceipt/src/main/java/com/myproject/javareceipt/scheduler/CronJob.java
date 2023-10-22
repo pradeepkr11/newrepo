@@ -49,76 +49,82 @@ public class CronJob {
     private List<GoodsReceipt> goodsReceipts;
 
     @Scheduled(cron = "0 */30 * * * *")
-    public void getSapData(){
+    public void getSapData() {
         date = LocalDate.now();
         finalUrl = "";
         finalUrl = url + date.toString();
-        SapResponse[] sapResponseArray = restTemplate.getForObject(finalUrl,SapResponse[].class);
+        try{
+        SapResponse[] sapResponseArray = restTemplate.getForObject(finalUrl, SapResponse[].class);
 
-        for(SapResponse tempResponse:sapResponseArray){
+        for (SapResponse tempResponse : sapResponseArray) {
             goodsReceipt = null;
-          purchaseOrder = purchaseOrderRepository.findById(tempResponse.getOrderId()).orElse(null);
+            purchaseOrder = purchaseOrderRepository.findById(tempResponse.getOrderId()).orElse(null);
 
-          if (purchaseOrder == null){
-              purchaseOrder = new PurchaseOrder();
-              purchaseOrder.setPurchaseOrderId(tempResponse.getOrderId());
+            if (purchaseOrder == null) {
+                purchaseOrder = new PurchaseOrder();
+                purchaseOrder.setPurchaseOrderId(tempResponse.getOrderId());
 
-              goodsReceipt = new GoodsReceipt();
+                goodsReceipt = new GoodsReceipt();
 
-              goodsReceipt.setGoodsReceiptId(tempResponse.getReceiptId());
-              goodsReceipt.setVendorId(tempResponse.getVendorId());
-              goodsReceipt.setCreationDate(tempResponse.getCreationDate());
-              goodsReceipt.setTruckId(tempResponse.getTruckId());
-              goodsReceipt.setQuantity(tempResponse.getQuantity());
-              goodsReceipt.setMaterialCode(tempResponse.getMaterialCode());
-              goodsReceipt.setMaterialDescription(tempResponse.getMaterialDescription());
-              goodsReceipt.setPaymentTerm(tempResponse.getPaymentTerm());
-              goodsReceipt.setPaymentTermDescription(tempResponse.getPaymentTermDescription());
-              goodsReceipt.setCgst(tempResponse.getCgst());
-              goodsReceipt.setIgst(tempResponse.getIgst());
-              goodsReceipt.setSgst(tempResponse.getSgst());
-              goodsReceipt.setUgst(tempResponse.getUgst());
+                goodsReceipt.setGoodsReceiptId(tempResponse.getReceiptId());
+                goodsReceipt.setVendorId(tempResponse.getVendorId());
+                goodsReceipt.setCreationDate(tempResponse.getCreationDate());
+                goodsReceipt.setTruckId(tempResponse.getTruckId());
+                goodsReceipt.setQuantity(tempResponse.getQuantity());
+                goodsReceipt.setMaterialCode(tempResponse.getMaterialCode());
+                goodsReceipt.setMaterialDescription(tempResponse.getMaterialDescription());
+                goodsReceipt.setPaymentTerm(tempResponse.getPaymentTerm());
+                goodsReceipt.setPaymentTermDescription(tempResponse.getPaymentTermDescription());
+                goodsReceipt.setCgst(tempResponse.getCgst());
+                goodsReceipt.setIgst(tempResponse.getIgst());
+                goodsReceipt.setSgst(tempResponse.getSgst());
+                goodsReceipt.setUgst(tempResponse.getUgst());
 
-              goodsReceipt.setPurchaseOrderId(purchaseOrder);
+                goodsReceipt.setPurchaseOrderId(purchaseOrder);
 
-              //goodsReceipt = goodsReceiptRepository.save(goodsReceipt);
-
-
-              purchaseOrder.add(goodsReceipt);
-
-              purchaseOrderRepository.save(purchaseOrder);
-          }
-          else{
-              goodsReceipts = purchaseOrder.getGoodsReceipts();
-
-              goodsReceipt = new GoodsReceipt();
-
-              goodsReceipt.setGoodsReceiptId(tempResponse.getReceiptId());
-              goodsReceipt.setVendorId(tempResponse.getVendorId());
-              goodsReceipt.setCreationDate(tempResponse.getCreationDate());
-              goodsReceipt.setTruckId(tempResponse.getTruckId());
-              goodsReceipt.setQuantity(tempResponse.getQuantity());
-              goodsReceipt.setMaterialCode(tempResponse.getMaterialCode());
-              goodsReceipt.setMaterialDescription(tempResponse.getMaterialDescription());
-              goodsReceipt.setPaymentTerm(tempResponse.getPaymentTerm());
-              goodsReceipt.setPaymentTermDescription(tempResponse.getPaymentTermDescription());
-              goodsReceipt.setCgst(tempResponse.getCgst());
-              goodsReceipt.setIgst(tempResponse.getIgst());
-              goodsReceipt.setSgst(tempResponse.getSgst());
-              goodsReceipt.setUgst(tempResponse.getUgst());
-
-              goodsReceipt.setPurchaseOrderId(purchaseOrder);
-
-              goodsReceipts.add(goodsReceipt);
-
-              purchaseOrder.setGoodsReceipts(goodsReceipts);
-
-              purchaseOrderRepository.save(purchaseOrder);
+                //goodsReceipt = goodsReceiptRepository.save(goodsReceipt);
 
 
+                purchaseOrder.add(goodsReceipt);
 
-          }
+                purchaseOrderRepository.save(purchaseOrder);
+            } else {
+                goodsReceipts = purchaseOrder.getGoodsReceipts();
+
+                goodsReceipt = new GoodsReceipt();
+
+                goodsReceipt.setGoodsReceiptId(tempResponse.getReceiptId());
+                goodsReceipt.setVendorId(tempResponse.getVendorId());
+                goodsReceipt.setCreationDate(tempResponse.getCreationDate());
+                goodsReceipt.setTruckId(tempResponse.getTruckId());
+                goodsReceipt.setQuantity(tempResponse.getQuantity());
+                goodsReceipt.setMaterialCode(tempResponse.getMaterialCode());
+                goodsReceipt.setMaterialDescription(tempResponse.getMaterialDescription());
+                goodsReceipt.setPaymentTerm(tempResponse.getPaymentTerm());
+                goodsReceipt.setPaymentTermDescription(tempResponse.getPaymentTermDescription());
+                goodsReceipt.setCgst(tempResponse.getCgst());
+                goodsReceipt.setIgst(tempResponse.getIgst());
+                goodsReceipt.setSgst(tempResponse.getSgst());
+                goodsReceipt.setUgst(tempResponse.getUgst());
+
+                goodsReceipt.setPurchaseOrderId(purchaseOrder);
+
+                goodsReceipts.add(goodsReceipt);
+
+                purchaseOrder.setGoodsReceipts(goodsReceipts);
+
+                purchaseOrderRepository.save(purchaseOrder);
+
+
+            }
         }
+
+    }
+    catch(Exception e){
+        System.out.println("Exception occurred inside Cronjob class");
+        System.out.println(e.getMessage());
+
+    }
 
 //        List<SapResponse> sapResponseList = Arrays.asList(sapResponseArray);
 //
