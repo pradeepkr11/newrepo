@@ -48,7 +48,7 @@ public class CronJob {
 
     private List<GoodsReceipt> goodsReceipts;
 
-    @Scheduled(cron = "0 */30 * * * *")
+    @Scheduled(cron = "0 */01 * * * *")
     public void getSapData() {
         date = LocalDate.now();
         finalUrl = "";
