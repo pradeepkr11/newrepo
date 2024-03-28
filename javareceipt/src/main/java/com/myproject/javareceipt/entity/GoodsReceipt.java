@@ -16,13 +16,19 @@ public class GoodsReceipt {
     @Column(name = "goods_receipt_id")
     private Long goodsReceiptId;
 
-    @ManyToOne
-    @JoinColumn(name = "purchase_order_id")
-    @JsonManagedReference
-    private PurchaseOrder purchaseOrderId;
+//    @ManyToOne
+//    @JoinColumn(name = "purchase_order_id")
+//    @JsonManagedReference
+//    private PurchaseOrder purchaseOrderId;
 
     @Column(name = "vendor_id")
     private Long vendorId;
+
+    @Column(name = "order_id")
+    private Long orderId;
+
+    @Column(name = "invoice_id")
+    private Long invoiceId;
 
     @Column(name = "creation_date")
     private LocalDate creationDate;

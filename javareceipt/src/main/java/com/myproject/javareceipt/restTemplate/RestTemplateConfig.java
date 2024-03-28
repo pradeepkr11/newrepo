@@ -1,4 +1,4 @@
-package com.myproject.javareceipt.resttemplate;
+package com.myproject.javareceipt.restTemplate;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
