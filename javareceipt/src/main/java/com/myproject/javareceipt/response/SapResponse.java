@@ -1,8 +1,5 @@
-package com.myproject.javareceipt.Response;
+package com.myproject.javareceipt.response;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 import java.time.LocalDate;
